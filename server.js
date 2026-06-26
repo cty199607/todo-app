@@ -70,8 +70,6 @@ app.put('/api/todos/:id', (req, res) => {
 app.delete('/api/todos/:id', (req, res) => {
     const { id } = req.params;
     const initialLength = todos.length;
-    
-    const initialLength = todos.length;
     todos = todos.filter(t => t.id !== parseInt(id));
     
     if (todos.length === initialLength) {
@@ -80,6 +78,14 @@ app.delete('/api/todos/:id', (req, res) => {
     
     saveTodos(todos);
     res.json({ success: true });
+});
+
+// 提供前端静态文件服务
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// 根路径返回index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
 
 app.listen(PORT, () => {
